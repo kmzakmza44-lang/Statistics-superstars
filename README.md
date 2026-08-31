@@ -34,6 +34,7 @@ The dataset contains student grades and demographic, social, and school-related 
 py -3.14 -m venv venv
 venv\Scripts\activate
 python -m pip install -r requirements.txt
+```
 
 ## Dataset Source
 
