@@ -1,2 +1,36 @@
-# Statistics-superstars
-First-year statistics project
+# Statistics Superstars
+
+A Principles of Statistics team project analysing factors associated with secondary-school student performance.
+
+## Team Members
+
+- Khant Min Zaw — 6845028 — Project Lead and Data Curator
+- Hsu Mon San — 6845030 — Statistical Analyst
+- Min Khant Kyaw — 6845034 — Visualization and Dashboard Specialist
+
+## Dataset
+
+**Student Performance Dataset**
+
+Source: UCI Machine Learning Repository  
+Dataset page: https://archive.ics.uci.edu/dataset/320/student+performance
+
+The dataset contains student grades and demographic, social, and school-related variables collected from two Portuguese schools.
+
+## Project Structure
+
+- `data/raw/` — Original dataset files
+- `data/processed/` — Cleaned datasets
+- `notebooks/` — Exploration and analysis notebooks
+- `src/` — Reusable Python functions
+- `tests/` — Unit tests
+- `dashboard/` — Streamlit application
+- `reports/` — Reports, tables, logs, and figures
+- `scripts/` — Data download and utility scripts
+
+## Windows Setup
+
+```bash
+py -3.14 -m venv venv
+venv\Scripts\activate
+python -m pip install -r requirements.txt
