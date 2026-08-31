@@ -44,3 +44,18 @@ This project uses the Portuguese-language portion of the
 The dataset was created by Paulo Cortez and is licensed under CC BY 4.0.
 Complete citation and provenance information is available in
 [DATA_SOURCES.md](DATA_SOURCES.md).
+
+## Reproducing the Data Pipeline
+
+From the repository root with the virtual environment activated:
+
+```bash
+python -m scripts.download_data
+python -m scripts.clean_data
+python -m scripts.generate_data_dictionary
+python -m pytest -q
+```
+
+The pipeline validates the documented schema and value ranges, removes only
+exact duplicate rows, and preserves valid unusual observations. IQR-flagged
+absence records and valid zero grades are not automatically removed or capped.

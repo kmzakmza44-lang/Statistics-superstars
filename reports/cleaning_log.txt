@@ -1,0 +1,17 @@
+DATA CLEANING LOG
+=================
+
+Dataset: UCI Student Performance - Portuguese course
+Pipeline: scripts/clean_data.py
+
+Whitespace-normalized categorical cells: 0
+Missing values found: 0; no imputation was required.
+Completely duplicated rows removed: 0
+All numeric and categorical values passed documented-range checks.
+IQR-flagged absence records retained: 21
+G3 zero-grade records retained: 15
+No valid observations were capped or removed as outliers.
+Original shape: 649 rows x 33 columns
+Cleaned shape: 649 rows x 33 columns
+
+Result: Cleaning and validation completed successfully.

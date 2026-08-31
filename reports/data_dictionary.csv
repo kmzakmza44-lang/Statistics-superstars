@@ -1,0 +1,34 @@
+column,role,measurement_scale,pandas_dtype,description,coding,missing_count,missing_percent,unique_count,minimum,maximum,example_values
+school,Predictor,Nominal,str,Student's school,GP = Gabriel Pereira; MS = Mousinho da Silveira,0,0.0,2,,,GP | MS
+sex,Predictor,Nominal,str,Student's sex,F = female; M = male,0,0.0,2,,,F | M
+age,Predictor,Ratio,int64,Student's age in years,Integer from 15 to 22,0,0.0,8,15,22,15 | 16 | 17 | 18 | 19
+address,Predictor,Nominal,str,Student's home address type,U = urban; R = rural,0,0.0,2,,,R | U
+famsize,Predictor,Ordinal,str,Family size,LE3 = three or fewer; GT3 = more than three,0,0.0,2,,,GT3 | LE3
+Pstatus,Predictor,Nominal,str,Parents' cohabitation status,T = living together; A = living apart,0,0.0,2,,,A | T
+Medu,Predictor,Ordinal,int64,Mother's education level,0 = none; 1 = primary; 2 = grades 5-9; 3 = secondary; 4 = higher education,0,0.0,5,0,4,0 | 1 | 2 | 3 | 4
+Fedu,Predictor,Ordinal,int64,Father's education level,0 = none; 1 = primary; 2 = grades 5-9; 3 = secondary; 4 = higher education,0,0.0,5,0,4,0 | 1 | 2 | 3 | 4
+Mjob,Predictor,Nominal,str,Mother's occupation,"teacher, health, services, at_home, or other",0,0.0,5,,,at_home | health | other | services | teacher
+Fjob,Predictor,Nominal,str,Father's occupation,"teacher, health, services, at_home, or other",0,0.0,5,,,at_home | health | other | services | teacher
+reason,Predictor,Nominal,str,Reason for choosing the school,"home, reputation, course, or other",0,0.0,4,,,course | home | other | reputation
+guardian,Predictor,Nominal,str,Student's guardian,"mother, father, or other",0,0.0,3,,,father | mother | other
+traveltime,Predictor,Ordinal,int64,Home-to-school travel time,1 = under 15 min; 2 = 15-30 min; 3 = 30-60 min; 4 = over 60 min,0,0.0,4,1,4,1 | 2 | 3 | 4
+studytime,Predictor,Ordinal,int64,Weekly study time,1 = under 2 hr; 2 = 2-5 hr; 3 = 5-10 hr; 4 = over 10 hr,0,0.0,4,1,4,1 | 2 | 3 | 4
+failures,Predictor,Ratio,int64,Number of previous class failures,Integer from 0 to 3,0,0.0,4,0,3,0 | 1 | 2 | 3
+schoolsup,Predictor,Nominal,str,Extra educational support,yes or no,0,0.0,2,,,no | yes
+famsup,Predictor,Nominal,str,Family educational support,yes or no,0,0.0,2,,,no | yes
+paid,Predictor,Nominal,str,Extra paid classes,yes or no,0,0.0,2,,,no | yes
+activities,Predictor,Nominal,str,Extracurricular activities,yes or no,0,0.0,2,,,no | yes
+nursery,Predictor,Nominal,str,Attended nursery school,yes or no,0,0.0,2,,,no | yes
+higher,Predictor,Nominal,str,Wants higher education,yes or no,0,0.0,2,,,no | yes
+internet,Predictor,Nominal,str,Internet access at home,yes or no,0,0.0,2,,,no | yes
+romantic,Predictor,Nominal,str,Currently in a romantic relationship,yes or no,0,0.0,2,,,no | yes
+famrel,Predictor,Ordinal,int64,Quality of family relationships,1 = very bad to 5 = excellent,0,0.0,5,1,5,1 | 2 | 3 | 4 | 5
+freetime,Predictor,Ordinal,int64,Free time after school,1 = very low to 5 = very high,0,0.0,5,1,5,1 | 2 | 3 | 4 | 5
+goout,Predictor,Ordinal,int64,Frequency of going out with friends,1 = very low to 5 = very high,0,0.0,5,1,5,1 | 2 | 3 | 4 | 5
+Dalc,Predictor,Ordinal,int64,Workday alcohol consumption,1 = very low to 5 = very high,0,0.0,5,1,5,1 | 2 | 3 | 4 | 5
+Walc,Predictor,Ordinal,int64,Weekend alcohol consumption,1 = very low to 5 = very high,0,0.0,5,1,5,1 | 2 | 3 | 4 | 5
+health,Predictor,Ordinal,int64,Current health status,1 = very bad to 5 = very good,0,0.0,5,1,5,1 | 2 | 3 | 4 | 5
+absences,Predictor,Ratio,int64,Number of school absences,Non-negative integer,0,0.0,24,0,32,0 | 1 | 2 | 3 | 4
+G1,Predictor,Interval,int64,First-period grade,Integer from 0 to 20,0,0.0,17,0,19,0 | 4 | 5 | 6 | 7
+G2,Predictor,Interval,int64,Second-period grade,Integer from 0 to 20,0,0.0,16,0,19,0 | 5 | 6 | 7 | 8
+G3,Outcome,Interval,int64,Final grade,Integer from 0 to 20,0,0.0,17,0,19,0 | 1 | 5 | 6 | 7
