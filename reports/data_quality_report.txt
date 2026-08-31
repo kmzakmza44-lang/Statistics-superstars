@@ -1,0 +1,27 @@
+DATA QUALITY REPORT
+===================
+
+Dataset: UCI Student Performance - Portuguese course
+Prepared by: Khant Min Zaw (6845028)
+Role: Project Lead and Data Curator
+
+Dataset shape: 649 rows and 33 columns
+Total missing values: 0
+Completely duplicated rows: 0
+
+Age range: 15 to 22
+Absence range: 0 to 32
+G1 range: 0 to 19
+G2 range: 0 to 19
+G3 range: 0 to 19
+
+IQR-flagged absence records: 21
+Students with G3 equal to zero: 15
+
+Decision:
+No records were removed during initial inspection.
+There are no missing values or completely duplicated rows.
+All inspected values are within the official documented ranges.
+Absence values above the IQR threshold were retained because they are
+plausible observations rather than confirmed data-entry errors.
+G3 values equal to zero were retained because zero is a valid grade.
