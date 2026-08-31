@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Downloaded dataset archives
+data/raw/*.zip
+data/raw/*.zip_old

@@ -34,3 +34,12 @@ The dataset contains student grades and demographic, social, and school-related 
 py -3.14 -m venv venv
 venv\Scripts\activate
 python -m pip install -r requirements.txt
+
+## Dataset Source
+
+This project uses the Portuguese-language portion of the
+[UCI Student Performance Dataset](https://archive.ics.uci.edu/dataset/320/student%2Bperformance).
+
+The dataset was created by Paulo Cortez and is licensed under CC BY 4.0.
+Complete citation and provenance information is available in
+[DATA_SOURCES.md](DATA_SOURCES.md).
