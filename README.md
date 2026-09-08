@@ -25,6 +25,12 @@ The dataset contains student grades and demographic, social, and school-related 
 - `src/` — Reusable Python functions
 - `tests/` — Unit tests
 - `dashboard/` — Streamlit application
+### Run the Streamlit Dashboard
+
+From the project root, run:
+
+```bash
+streamlit run dashboard/app.pys
 - `reports/` — Reports, tables, logs, and figures
 - `scripts/` — Data download and utility scripts
 
