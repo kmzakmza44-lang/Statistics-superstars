@@ -30,7 +30,7 @@ The dataset contains student grades and demographic, social, and school-related 
 From the project root, run:
 
 ```bash
-streamlit run dashboard/app.pys
+python -m streamlit run dashboard/app.py
 - `reports/` — Reports, tables, logs, and figures
 - `scripts/` — Data download and utility scripts
 

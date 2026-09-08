@@ -23,7 +23,9 @@ st.set_page_config(
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = PROJECT_ROOT / "data" / "processed" / "cleaned_data.csv"
 
-df = pd.read_csv(DATA_PATH)
+from src.data_loader import load_processed_data
+
+df = load_processed_data()
 
 
 # --------------------------------------------------
@@ -32,7 +34,14 @@ df = pd.read_csv(DATA_PATH)
 
 st.title("📊 Student Performance Dashboard")
 st.markdown(
-    "### Exploratory analysis of student characteristics, study habits, and final grades"
+    "📚 **Data source:** "
+    "[UCI Machine Learning Repository — Student Performance Dataset]"
+    "(https://archive.ics.uci.edu/dataset/320/student+performance)"
+)
+
+st.info(
+    "Note: These visualizations show associations between variables. "
+    "Association does not prove causation."
 )
 
 st.divider()
@@ -75,6 +84,7 @@ if "sex" in df.columns:
 
 
 # Higher education intention
+
 if "higher" in df.columns:
     higher_options = sorted(df["higher"].dropna().unique())
     selected_higher = st.sidebar.multiselect(
@@ -86,6 +96,58 @@ if "higher" in df.columns:
     filtered_df = filtered_df[
         filtered_df["higher"].isin(selected_higher)
     ]
+
+
+# Study time filter
+
+if "studytime" in df.columns:
+    studytime_options = sorted(df["studytime"].dropna().unique())
+    selected_studytime = st.sidebar.multiselect(
+        "Study Time",
+        studytime_options,
+        default=studytime_options
+    )
+
+    filtered_df = filtered_df[
+        filtered_df["studytime"].isin(selected_studytime)
+    ]
+
+
+# Failures filter
+
+if "failures" in df.columns:
+    failures_options = sorted(df["failures"].dropna().unique())
+    selected_failures = st.sidebar.multiselect(
+        "Previous Failures",
+        failures_options,
+        default=failures_options
+    )
+
+    filtered_df = filtered_df[
+        filtered_df["failures"].isin(selected_failures)
+    ]
+
+
+# Internet filter
+
+if "internet" in df.columns:
+    internet_options = sorted(df["internet"].dropna().unique())
+    selected_internet = st.sidebar.multiselect(
+        "Internet Access",
+        internet_options,
+        default=internet_options
+    )
+
+    filtered_df = filtered_df[
+        filtered_df["internet"].isin(selected_internet)
+    ]
+
+
+# Zero-student safety check
+
+if filtered_df.empty:
+    st.warning("No students match the selected filters.")
+    st.stop()
 
 
 # --------------------------------------------------
