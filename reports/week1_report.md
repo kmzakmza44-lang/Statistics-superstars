@@ -96,7 +96,7 @@ The cleaned dataset is identical to the standardized raw dataset because no inva
 | G2 | 5.58 × 10⁻¹² | ❌ No |
 | G3 | 2.42 × 10⁻¹⁷ | ❌ No |
 
-### Strongest Correlations:
+### Strongest Spearman Correlations:
 1. `G2` ↔ `G3`: **0.944** — Strong positive
 2. `G1` ↔ `G2`: **0.893** — Strong positive
 3. `G1` ↔ `G3`: **0.883** — Strong positive
