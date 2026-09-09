@@ -42,6 +42,17 @@ venv\Scripts\activate
 python -m pip install -r requirements.txt
 ```
 
+## Run the Streamlit Dashboard
+
+From the project root with the virtual environment activated:
+
+```cmd
+python -m streamlit run dashboard\app.py
+```
+
+Use the sidebar filters to explore student subgroups. Select at least one
+value in every filter; the dashboard will warn you if no records match.
+
 ## Dataset Source
 
 This project uses the Portuguese-language portion of the
