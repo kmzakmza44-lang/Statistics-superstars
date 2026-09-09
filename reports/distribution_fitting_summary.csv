@@ -1,0 +1,6 @@
+column,best_fit,p_value,good_fit
+age,Normal,8.02923326175707e-18,False
+absences,Normal,8.175942758047707e-27,False
+G1,Lognormal,0.0004932368405688715,False
+G2,Gamma,0.00038015846154100747,False
+G3,Normal,4.5641146277242855e-09,False
