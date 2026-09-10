@@ -2,25 +2,43 @@
 
 ## Team Statistics Superstars
 
-## 1 Hypothesis Testing Results
+**Date:** September 10, 2026
 
-### 1.1 One Sample T Test
+## 1 Analysis approach and assumptions
 
-A one-sample t-test was conducted to determine whether the average
-final grade, G3, was significantly different from 10.
+The analysis uses a significance level of 0.05 and treats each row as an
+independent student observation. The outcome `G3` is quantitative but discrete.
+Week 1 Shapiro-Wilk tests showed that `G1`, `G2`, and `G3` are non-normal. The
+large sample of 649 students makes t-tests and ANOVA reasonably robust for mean
+comparisons, but their conclusions should still be interpreted cautiously.
+
+The one-sample t-test assumes independent observations and an approximately
+normal sampling distribution of the mean. The independent comparison uses
+Welch's t-test, so it does not require equal group variances. One-way ANOVA
+assumes independent observations, approximately normal within-group residuals,
+and similar variances across groups. The chi-square test assumes independent,
+mutually exclusive categories and sufficiently large expected cell counts; the
+selected `sex` by `higher` table satisfies the expected-count condition.
+
+## 2 Hypothesis testing results
+
+### 2.1 One-sample t-test
+
+The test examined $H_0: \mu_{G3}=10$ against the two-sided alternative that the
+mean differs from 10.
 
 - Sample mean: 11.906
 - T-statistic: 15.030
 - P-value: 5.068e-44
 - Significant: Yes
 
-The p-value was below 0.05, so the null hypothesis was rejected.
-The average G3 grade was significantly different from 10.
+The null hypothesis was rejected. The average `G3` grade was significantly
+different from 10.
 
-### 1.2 Independent T Test
+### 2.2 Independent t-test
 
-An independent t-test was conducted to compare the average G3 grades
-of female and male students.
+Welch's independent t-test examined whether female and male students had the
+same mean `G3` grade.
 
 - Female mean: 12.253
 - Male mean: 11.406
@@ -28,60 +46,68 @@ of female and male students.
 - P-value: 0.0011
 - Significant: Yes
 
-The p-value was below 0.05, so the null hypothesis was rejected.
-Female and male students had significantly different average final
-grades in this dataset. Female students had the higher average grade.
-This result shows an association but does not prove causation.
+The null hypothesis was rejected. Female students had a higher sample mean than
+male students, and the difference was statistically significant. This is an
+association and does not show that sex causes the grade difference.
 
-### 1.3 One Way ANOVA
+### 2.3 One-way ANOVA and Tukey HSD
 
-A one-way ANOVA was conducted to compare average G3 grades across
-the four study-time groups.
+The ANOVA examined whether all four study-time groups had the same mean `G3`.
 
 - F-statistic: 15.876
 - P-value: 5.706e-10
 - Significant: Yes
 
-The p-value was below 0.05, so the null hypothesis was rejected.
-At least one study-time group had a significantly different average
-G3 grade. A post-hoc test would be required to identify exactly
-which groups differed.
+The null hypothesis was rejected, so Tukey HSD pairwise comparisons were
+performed while controlling family-wise error.
 
-### 1.4 Chi Square Test
+| Group 1 | Group 2 | Mean difference | Adjusted p-value | Significant |
+|---:|---:|---:|---:|:---:|
+| 1 | 2 | 1.2475 | 0.0001 | Yes |
+| 1 | 3 | 2.3825 | <0.0001 | Yes |
+| 1 | 4 | 2.2128 | 0.0007 | Yes |
+| 2 | 3 | 1.1350 | 0.0103 | Yes |
+| 2 | 4 | 0.9653 | 0.3084 | No |
+| 3 | 4 | -0.1697 | 0.9927 | No |
 
-A chi-square test of independence was conducted to examine the
-association between sex and intention to pursue higher education.
+Groups 1-2, 1-3, 1-4, and 2-3 differed significantly. Groups 2-4 and
+3-4 did not. These results identify differences in this observational dataset,
+not causal effects of study time.
+
+### 2.4 Chi-square test
+
+The test examined whether `sex` and intention to pursue higher education
+(`higher`) were independent.
 
 - Chi-square statistic: 1.827
 - Degrees of freedom: 1
 - P-value: 0.1765
 - Significant: No
 
-The p-value was greater than 0.05, so the null hypothesis was not
-rejected. No statistically significant association was found between
-sex and intention to pursue higher education.
+The null hypothesis was not rejected. No statistically significant association
+was found between sex and intention to pursue higher education.
 
-## 2 Distribution Fitting
+## 3 Distribution fitting
 
-Five distributions were considered: Normal, Exponential, Gamma,
-Lognormal, and Uniform.
+Normal, Exponential, Gamma, Lognormal, and Uniform distributions were fitted.
 
-| Column | Best Tested Distribution | P-value | Good Fit |
-|---|---:|---:|---:|
+| Column | Best tested distribution | P-value | Good fit |
+|---|---:|---:|:---:|
 | age | Normal | 8.029e-18 | No |
 | absences | Normal | 8.176e-27 | No |
 | G1 | Lognormal | 4.932e-04 | No |
 | G2 | Gamma | 3.802e-04 | No |
 | G3 | Normal | 4.564e-09 | No |
 
-All p-values were below 0.05. Therefore, none of the tested
-distributions provided a statistically good fit. The term best fit
-means only that the distribution had the highest p-value among the
-tested options.
+Every p-value was below 0.05, so none of the candidates was a statistically
+good fit. “Best tested distribution” means only the candidate with the largest
+p-value. These fits are exploratory because the variables are discrete and the
+ordinary Kolmogorov-Smirnov p-values do not adjust for parameters estimated
+from the same observations.
 
-## 3 Confidence Intervals
+![Observed G3 grades and best tested distribution](figures/distribution_fit_G3.png)
 
-### 3.1 Traditional and Bootstrap Intervals
+## 4 Confidence intervals
 
 | Column | Mean | Traditional 95% CI | Bootstrap 95% CI |
 |---|---:|---:|---:|
@@ -91,51 +117,56 @@ tested options.
 | G2 | 11.570 | 11.346 to 11.794 | 11.339 to 11.797 |
 | G3 | 11.906 | 11.657 to 12.155 | 11.652 to 12.151 |
 
-The traditional and bootstrap confidence intervals were very similar.
-This indicates that the estimated means were stable for this sample.
-For G3, the population mean was estimated to be between approximately
-11.65 and 12.15 with 95% confidence.
+The traditional and bootstrap intervals were very similar. For `G3`, both
+methods estimated the population mean to be approximately 11.65 to 12.15.
+Bootstrap intervals provide a useful robustness check given the non-normal raw
+variables, although neither approach corrects sampling bias or dependence.
 
-## 4 Key Findings
+![Traditional and bootstrap confidence intervals](figures/confidence_intervals_comparison.png)
 
-1. The average G3 grade was significantly different from 10.
-2. Female and male students had significantly different average G3
-   grades in this dataset.
-3. At least one study-time group had a different average G3 grade.
-4. Sex and intention to pursue higher education did not have a
-   statistically significant association.
-5. None of the tested continuous distributions provided a good fit
-   for the five selected variables.
-6. Traditional and bootstrap confidence intervals produced similar
-   results.
+## 5 Key findings and limitations
 
-## 5 Limitations
+1. Mean `G3` was significantly different from 10.
+2. Female and male students had significantly different mean `G3` grades.
+3. ANOVA and Tukey HSD identified specific study-time group differences.
+4. `sex` and `higher` did not have a significant association.
+5. None of the tested continuous distributions adequately fitted the selected
+   discrete variables.
+6. Traditional and bootstrap confidence intervals produced similar estimates.
 
-The analyses identify statistical associations and differences but
-do not prove causation. Some variables, including grades, are discrete,
-which can make continuous probability distributions fit poorly.
-Additional post-hoc testing is needed to identify which study-time
-groups differ after the significant ANOVA result.
+The analyses identify associations rather than causation. Grade non-normality,
+discrete measurement, possible confounding, and the observational study design
+limit the conclusions. The ANOVA should be supplemented with a nonparametric
+sensitivity analysis if stronger distributional robustness is required.
 
-## 6 Files Generated
+## 6 Recommendations for Week 3
 
-- reports/hypothesis_tests_summary.csv
-- reports/distribution_fitting_summary.csv
-- reports/ci_comparison.csv
-- reports/figures/distribution_fit_age.png
-- reports/figures/distribution_fit_absences.png
-- reports/figures/distribution_fit_G1.png
-- reports/figures/distribution_fit_G2.png
-- reports/figures/distribution_fit_G3.png
-- reports/figures/confidence_intervals_comparison.png
-- notebooks/02_hypothesis_testing.ipynb
-- notebooks/03_distribution_fitting.ipynb
-- notebooks/04_confidence_intervals.ipynb
-- src/statistics.py
+- Highlight the significant study-time comparisons without implying causation.
+- Add interactive filters for sex and study-time group to the dashboard.
+- Display sample sizes and confidence intervals beside reported means.
+- Use observed histograms or count plots rather than assuming normality.
+- Consider a Kruskal-Wallis sensitivity analysis for `G3` by study time.
+- Add plain-language notes explaining p-values, uncertainty, and limitations.
 
-## 7 Student B Contribution
+## 7 Team contributions
 
-Student B implemented the statistical analysis module, conducted the
-hypothesis tests, fitted probability distributions, calculated
-traditional and bootstrap confidence intervals, generated statistical
-figures, saved the result tables, and documented the Week 2 findings.
+| Team member | Tasks completed | Approximate hours |
+|---|---|---:|
+| Student A | Data preparation, environment management, repository updates, and report structure | 2 |
+| Student B | Statistical functions, automated tests, hypothesis tests, Tukey HSD, distribution fitting, confidence intervals, bootstrap analysis, and Week 2 documentation | 8 |
+| Student C | Statistical visualizations, distribution plots, confidence-interval plot support, and dashboard work | 3 |
+| All team members | Reviewed interpretations, checked calculations, discussed limitations, and prepared Week 3 questions | Shared |
+
+## 8 Files generated
+
+- `reports/hypothesis_tests_summary.csv`
+- `reports/anova_tukey_hsd.csv`
+- `reports/distribution_fitting_summary.csv`
+- `reports/ci_comparison.csv`
+- `reports/figures/distribution_fit_*.png`
+- `reports/figures/confidence_intervals_comparison.png`
+- `notebooks/02_hypothesis_testing.ipynb`
+- `notebooks/03_distribution_fitting.ipynb`
+- `notebooks/04_confidence_intervals.ipynb`
+- `src/statistics.py`
+- `tests/test_statistics.py`

@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 from scipy import stats
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
 
 
 class StatisticalAnalyzer:
@@ -98,6 +99,34 @@ class StatisticalAnalyzer:
             "normal": normal,
             "interpretation": interpretation
         }
+
+    def tukey_hsd_test(
+        self,
+        numeric_column,
+        group_column,
+        alpha=0.05
+    ):
+        """Run Tukey HSD pairwise comparisons after a significant ANOVA."""
+
+        analysis_data = self.data[
+            [numeric_column, group_column]
+        ].dropna()
+
+        if analysis_data[group_column].nunique() < 2:
+            return pd.DataFrame({
+                "error": ["At least two valid groups are required"]
+            })
+
+        result = pairwise_tukeyhsd(
+            endog=analysis_data[numeric_column],
+            groups=analysis_data[group_column],
+            alpha=alpha
+        )
+
+        return pd.DataFrame(
+            result._results_table.data[1:],
+            columns=result._results_table.data[0]
+        )
 
     def all_normality_tests(self, alpha=0.05):
         """Run the Shapiro-Wilk test on every numeric column."""
@@ -289,8 +318,8 @@ class StatisticalAnalyzer:
             "significant": significant,
             "interpretation": interpretation
         }
-    def confidence_interval(self, column, confidence=0.95):
 
+    def confidence_interval(self, column, confidence=0.95):
         """Calculate a confidence interval for a column mean."""
 
         data = self.data[column].dropna()

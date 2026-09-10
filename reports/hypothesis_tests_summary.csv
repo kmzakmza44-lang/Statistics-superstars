@@ -1,5 +1,5 @@
 test,variables,statistic,p_value,significant,interpretation
-One-sample t-test,G3 compared with 10,15.029917673858264,5.067745669968848e-44,True,The mean of G3 is significantly different from 10
-Independent t-test,G3 grouped by sex,3.274707393354231,0.0011245651360440646,True,There is a significant difference between F and M
-One-way ANOVA,G3 grouped by studytime,15.876267993177123,5.705728458962864e-10,True,At least one group has a significantly different mean
+One-sample t-test,G3 compared with 10,15.029917673858264,5.067745669968866e-44,True,The mean of G3 is significantly different from 10
+Independent t-test,G3 grouped by sex,3.274707393354231,0.0011245651360440678,True,There is a significant difference between F and M
+One-way ANOVA,G3 grouped by studytime,15.876267993177123,5.705728458963125e-10,True,At least one group has a significantly different mean
 Chi-square test,sex and higher,1.8266099106187106,0.17652849129020912,False,No significant association was found between sex and higher
