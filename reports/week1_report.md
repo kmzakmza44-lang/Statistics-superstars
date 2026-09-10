@@ -1,7 +1,7 @@
-# Week 1 Progress Report: Data Preparation, Statistical Analysis, and Visualization
+# Week 1 Report: Data Acquisition & Exploration
 
 ## Team: Statistics Superstars
-**Date:**  8 Sept 2026
+**Date:** 8 September 2026
 
 ## 1. Dataset Overview
 ### Selected Dataset: UCI Student Performance Dataset
@@ -120,11 +120,11 @@ The cleaned dataset is identical to the standardized raw dataset because no inva
 
 ## 5. Initial Insights
 
-1. **Previous Grades Are the Strongest Indicators:** `G2` had the strongest relationship with the final grade (`G3`), with a Spearman correlation of 0.944. `G1` was also strongly related to `G3` at 0.883.
+1. `G2` had the strongest relationship with the final grade (`G3`), with a Spearman correlation of 0.944. `G1` was also strongly related to `G3` at 0.883.
 
-2. **Absences Had a Weaker Relationship Than Expected:** Absences had only a weak negative correlation with final grade (`ρ = -0.159`), while previous failures showed a stronger negative relationship (`ρ = -0.448`).
+2. Absences had a weak negative correlation with final grade (`ρ = -0.159`). Previous failures had a stronger negative relationship (`ρ = -0.448`).
 
-3. **Potential Analysis for Next Week:** The team will test whether final grades differ significantly by school, higher-education intention, study time, and previous failures. Because the data are non-normal, suitable non-parametric tests and effect sizes will be considered.
+3. Week 2 will test differences in final grades and calculate confidence intervals.
 
 ## 6. Data Quality Issues
 
@@ -132,17 +132,11 @@ The cleaned dataset is identical to the standardized raw dataset because no inva
 
 - No missing values, duplicate rows, invalid categories, or out-of-range values were detected.
 
-- The `absences` variable is strongly right-skewed, and 21 records were flagged by the IQR method. These observations appear valid and were retained.
+- The IQR method flagged 21 high-absence records, and 15 students have a final grade of zero. These valid observations were retained.
 
-- Fifteen students have a final grade (`G3`) of zero. These are valid recorded values, but they influence the grade distribution and normality results.
+- Several variables are ordinal codes, and some comparison groups are unbalanced.
 
-- Several variables, including `studytime`, `health`, and alcohol consumption, are ordinal codes rather than continuous measurements.
-
-- Some comparison groups are unbalanced. For example, 580 students intend to pursue higher education, compared with only 69 who do not.
-
-- The data come from only two Portuguese schools, so the findings may not represent students in other schools or countries.
-
-- The Portuguese and Mathematics datasets contain 382 overlapping students and must not be combined as if every row represents a different person.
+- The data come from two Portuguese schools. The Portuguese and Mathematics datasets also contain 382 overlapping students.
 
 ### Recommendations:
 
@@ -152,19 +146,22 @@ The cleaned dataset is identical to the standardized raw dataset because no inva
 
 - Report group sizes and effect sizes alongside p-values, especially for unbalanced categories.
 
-- Conduct sensitivity analysis to determine whether zero final grades or unusually high absence values substantially change the results.
-
-- Analyse the Portuguese dataset as the primary dataset. If the Mathematics dataset is used, analyse it separately or carefully account for overlapping students.
-
-- No additional external dataset is currently required for Week 2 analysis.
+- Analyse the Portuguese dataset as the primary dataset and treat the Mathematics data separately because some students overlap.
 
 ## 7. Team Contributions
 
 | Team Member | Student ID | Tasks Completed | Estimated Hours |
 |-------------|------------|-----------------|-----------------|
-| Khant Min Zaw | 6845028 | Repository setup, dataset acquisition and citation, initial inspection, data loader, cleaning pipeline, data dictionary, automated tests, documentation, pull-request review, integration, and correction of notebook/dashboard issues | 8 |
-| Hsu Mon San | 6845030 | Descriptive statistics, normality testing, Pearson and Spearman correlations, statistical notebook, and generated statistical reports | 7 |
-| Min Khant Kyaw | 6845034 | Exploratory visualization notebook, distribution plots, box and violin plots, correlation heatmap, Q-Q plots, interactive HTML plots, and initial Streamlit dashboard | 5 |
+| Khant Min Zaw | 6845028 | Repository setup, data acquisition, cleaning, data dictionary, testing, and documentation | 8 |
+| Hsu Mon San | 6845030 | Summary statistics, normality tests, correlations, and statistical reports | 7 |
+| Min Khant Kyaw | 6845034 | Exploratory plots, interactive plots, and Streamlit dashboard | 5 |
+
+## 8. Next Steps (Week 2)
+
+- [ ] Perform t-tests, ANOVA, and a chi-square test.
+- [ ] Fit probability distributions to selected variables.
+- [ ] Calculate traditional and bootstrap confidence intervals.
+- [ ] Review the results and complete the Week 2 report.
 
 ## Appendix
 
