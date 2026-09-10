@@ -16,9 +16,13 @@ class StatisticalAnalyzer:
             include="number"
         ).columns
 
-        self.categorical_cols = self.data.select_dtypes(
-            include=["object", "category"]
-        ).columns
+        self.categorical_cols = self.data.columns[
+            [
+                pd.api.types.is_string_dtype(dtype)
+                or isinstance(dtype, pd.CategoricalDtype)
+                for dtype in self.data.dtypes
+            ]
+        ]
 
     def descriptive_stats(self, column):
         """Calculate descriptive statistics for one numeric column."""
