@@ -1,65 +1,34 @@
-# Week 2 Report Statistical Analysis
+# Week 2 Report: Statistical Analysis
 
-## Team Statistics Superstars
+## Team: Statistics Superstars
 
-**Date:** September 10, 2026
+**Date:** 10 September 2026
 
-## 1 Analysis approach and assumptions
+---
 
-The analysis uses a significance level of 0.05 and treats each row as an
-independent student observation. The outcome `G3` is quantitative but discrete.
-Week 1 Shapiro-Wilk tests showed that `G1`, `G2`, and `G3` are non-normal. The
-large sample of 649 students makes t-tests and ANOVA reasonably robust for mean
-comparisons, but their conclusions should still be interpreted cautiously.
+## 1. Hypothesis Testing Results
 
-The one-sample t-test assumes independent observations and an approximately
-normal sampling distribution of the mean. The independent comparison uses
-Welch's t-test, so it does not require equal group variances. One-way ANOVA
-assumes independent observations, approximately normal within-group residuals,
-and similar variances across groups. The chi-square test assumes independent,
-mutually exclusive categories and sufficiently large expected cell counts; the
-selected `sex` by `higher` table satisfies the expected-count condition.
+All tests used a significance level of 0.05.
 
-## 2 Hypothesis testing results
+### 1.1 T-Tests
 
-### 2.1 One-sample t-test
+| Test | Comparison | Statistic | P-value | Significant |
+|---|---|---:|---:|:---:|
+| One-sample t-test | Mean `G3` compared with 10 | 15.030 | 5.068 × 10⁻⁴⁴ | Yes |
+| Welch independent t-test | Mean `G3` for female and male students | 3.275 | 0.0011 | Yes |
 
-The test examined $H_0: \mu_{G3}=10$ against the two-sided alternative that the
-mean differs from 10.
+**Interpretation:**
 
-- Sample mean: 11.906
-- T-statistic: 15.030
-- P-value: 5.068e-44
-- Significant: Yes
+- Mean `G3` was 11.906 and was significantly different from 10.
+- Female students had a higher mean `G3` than male students (12.253 compared with 11.406). This is an association, not evidence of causation.
 
-The null hypothesis was rejected. The average `G3` grade was significantly
-different from 10.
+### 1.2 ANOVA
 
-### 2.2 Independent t-test
+| Variable | Groups | F-statistic | P-value | Significant |
+|---|---|---:|---:|:---:|
+| `G3` | Four study-time groups | 15.876 | 5.706 × 10⁻¹⁰ | Yes |
 
-Welch's independent t-test examined whether female and male students had the
-same mean `G3` grade.
-
-- Female mean: 12.253
-- Male mean: 11.406
-- T-statistic: 3.275
-- P-value: 0.0011
-- Significant: Yes
-
-The null hypothesis was rejected. Female students had a higher sample mean than
-male students, and the difference was statistically significant. This is an
-association and does not show that sex causes the grade difference.
-
-### 2.3 One-way ANOVA and Tukey HSD
-
-The ANOVA examined whether all four study-time groups had the same mean `G3`.
-
-- F-statistic: 15.876
-- P-value: 5.706e-10
-- Significant: Yes
-
-The null hypothesis was rejected, so Tukey HSD pairwise comparisons were
-performed while controlling family-wise error.
+Tukey HSD was used after the significant ANOVA result.
 
 | Group 1 | Group 2 | Mean difference | Adjusted p-value | Significant |
 |---:|---:|---:|---:|:---:|
@@ -70,94 +39,110 @@ performed while controlling family-wise error.
 | 2 | 4 | 0.9653 | 0.3084 | No |
 | 3 | 4 | -0.1697 | 0.9927 | No |
 
-Groups 1-2, 1-3, 1-4, and 2-3 differed significantly. Groups 2-4 and
-3-4 did not. These results identify differences in this observational dataset,
-not causal effects of study time.
+**Interpretation:** Study-time groups 1–2, 1–3, 1–4, and 2–3 differed significantly. Groups 2–4 and 3–4 did not.
 
-### 2.4 Chi-square test
+### 1.3 Chi-Square Test
 
-The test examined whether `sex` and intention to pursue higher education
-(`higher`) were independent.
+| Variable 1 | Variable 2 | χ²-statistic | P-value | Significant |
+|---|---|---:|---:|:---:|
+| `sex` | `higher` | 1.827 | 0.1765 | No |
 
-- Chi-square statistic: 1.827
-- Degrees of freedom: 1
-- P-value: 0.1765
-- Significant: No
+**Interpretation:** No significant association was found between sex and intention to pursue higher education.
 
-The null hypothesis was not rejected. No statistically significant association
-was found between sex and intention to pursue higher education.
+---
 
-## 3 Distribution fitting
+## 2. Distribution Fitting
 
-Normal, Exponential, Gamma, Lognormal, and Uniform distributions were fitted.
+### 2.1 Best-Fitting Distributions
 
-| Column | Best tested distribution | P-value | Good fit |
-|---|---:|---:|:---:|
-| age | Normal | 8.029e-18 | No |
-| absences | Normal | 8.176e-27 | No |
-| G1 | Lognormal | 4.932e-04 | No |
-| G2 | Gamma | 3.802e-04 | No |
-| G3 | Normal | 4.564e-09 | No |
+| Column | Best Fit | P-value | Good Fit? |
+|---|---|---:|:---:|
+| age | Normal | 8.029 × 10⁻¹⁸ | No |
+| absences | Normal | 8.176 × 10⁻²⁷ | No |
+| G1 | Lognormal | 4.932 × 10⁻⁴ | No |
+| G2 | Gamma | 3.802 × 10⁻⁴ | No |
+| G3 | Normal | 4.564 × 10⁻⁹ | No |
 
-Every p-value was below 0.05, so none of the candidates was a statistically
-good fit. “Best tested distribution” means only the candidate with the largest
-p-value. These fits are exploratory because the variables are discrete and the
-ordinary Kolmogorov-Smirnov p-values do not adjust for parameters estimated
-from the same observations.
+None of the tested distributions provided a good fit because every p-value was below 0.05.
+
+### 2.2 Distribution Visualization
 
 ![Observed G3 grades and best tested distribution](figures/distribution_fit_G3.png)
 
-## 4 Confidence intervals
+---
 
-| Column | Mean | Traditional 95% CI | Bootstrap 95% CI |
-|---|---:|---:|---:|
-| age | 16.744 | 16.651 to 16.838 | 16.652 to 16.840 |
-| absences | 3.659 | 3.302 to 4.017 | 3.307 to 4.032 |
-| G1 | 11.399 | 11.188 to 11.610 | 11.186 to 11.609 |
-| G2 | 11.570 | 11.346 to 11.794 | 11.339 to 11.797 |
-| G3 | 11.906 | 11.657 to 12.155 | 11.652 to 12.151 |
+## 3. Confidence Intervals
 
-The traditional and bootstrap intervals were very similar. For `G3`, both
-methods estimated the population mean to be approximately 11.65 to 12.15.
-Bootstrap intervals provide a useful robustness check given the non-normal raw
-variables, although neither approach corrects sampling bias or dependence.
+### 3.1 Traditional Confidence Intervals (95%)
+
+| Column | Mean | CI Lower | CI Upper | Width |
+|---|---:|---:|---:|---:|
+| age | 16.744 | 16.651 | 16.838 | 0.187 |
+| absences | 3.659 | 3.302 | 4.017 | 0.714 |
+| G1 | 11.399 | 11.188 | 11.610 | 0.422 |
+| G2 | 11.570 | 11.346 | 11.794 | 0.448 |
+| G3 | 11.906 | 11.657 | 12.155 | 0.497 |
+
+### 3.2 Bootstrap Confidence Intervals (95%)
+
+| Column | Mean | CI Lower | CI Upper | Width |
+|---|---:|---:|---:|---:|
+| age | 16.744 | 16.652 | 16.840 | 0.188 |
+| absences | 3.659 | 3.307 | 4.032 | 0.726 |
+| G1 | 11.399 | 11.186 | 11.609 | 0.422 |
+| G2 | 11.570 | 11.339 | 11.797 | 0.458 |
+| G3 | 11.906 | 11.652 | 12.151 | 0.499 |
+
+**Comparison:** The two methods produced very similar intervals. Bootstrap intervals are useful here because the selected variables were not normally distributed.
 
 ![Traditional and bootstrap confidence intervals](figures/confidence_intervals_comparison.png)
 
-## 5 Key findings and limitations
+---
 
-1. Mean `G3` was significantly different from 10.
-2. Female and male students had significantly different mean `G3` grades.
-3. ANOVA and Tukey HSD identified specific study-time group differences.
-4. `sex` and `higher` did not have a significant association.
-5. None of the tested continuous distributions adequately fitted the selected
-   discrete variables.
-6. Traditional and bootstrap confidence intervals produced similar estimates.
+## 4. Key Statistical Findings
 
-The analyses identify associations rather than causation. Grade non-normality,
-discrete measurement, possible confounding, and the observational study design
-limit the conclusions. The ANOVA should be supplemented with a nonparametric
-sensitivity analysis if stronger distributional robustness is required.
+1. All five selected variables failed the Week 1 normality tests.
+2. Mean final grades differed by sex and by study-time group in this sample.
+3. None of the five tested continuous distributions fitted the selected variables well.
+4. Traditional and bootstrap confidence intervals were very similar.
 
-## 6 Recommendations for Week 3
+---
 
-- Highlight the significant study-time comparisons without implying causation.
-- Add interactive filters for sex and study-time group to the dashboard.
-- Display sample sizes and confidence intervals beside reported means.
-- Use observed histograms or count plots rather than assuming normality.
-- Consider a Kruskal-Wallis sensitivity analysis for `G3` by study time.
-- Add plain-language notes explaining p-values, uncertainty, and limitations.
+## 5. Interpretation & Conclusions
 
-## 7 Team contributions
+### 5.1 What the Results Mean
 
-| Team member | Tasks completed | Approximate hours |
-|---|---|---:|
-| Student A | Data preparation, environment management, repository updates, and report structure | 2 |
-| Student B | Statistical functions, automated tests, hypothesis tests, Tukey HSD, distribution fitting, confidence intervals, bootstrap analysis, and Week 2 documentation | 8 |
-| Student C | Statistical visualizations, distribution plots, confidence-interval plot support, and dashboard work | 3 |
-| All team members | Reviewed interpretations, checked calculations, discussed limitations, and prepared Week 3 questions | Shared |
+- Study time and previous grades are useful areas for further analysis.
+- The tests show differences and associations in this dataset, not causes.
+- The confidence intervals give a reasonable range for each population mean.
 
-## 8 Files generated
+### 5.2 Limitations
+
+- The data are observational and come from only two schools.
+- The selected variables are discrete and non-normal.
+- Other variables may explain some of the observed group differences.
+
+### 5.3 Recommendations for Week 3
+
+- Highlight the study-time results in the dashboard.
+- Show sample sizes and confidence intervals with group means.
+- Keep a short note that association does not prove causation.
+
+---
+
+## 6. Team Contributions
+
+| Team Member | Student ID | Tasks Completed | Hours |
+|---|---:|---|---:|
+| Khant Min Zaw | 6845028 | Repository updates, report structure, and code review | 2 |
+| Hsu Mon San | 6845030 | Statistical functions, tests, distribution fitting, confidence intervals, bootstrap analysis, and documentation | 8 |
+| Min Khant Kyaw | 6845034 | Statistical visualization and dashboard support | 3 |
+
+---
+
+## Appendix
+
+**Files Generated:**
 
 - `reports/hypothesis_tests_summary.csv`
 - `reports/anova_tukey_hsd.csv`
@@ -165,8 +150,11 @@ sensitivity analysis if stronger distributional robustness is required.
 - `reports/ci_comparison.csv`
 - `reports/figures/distribution_fit_*.png`
 - `reports/figures/confidence_intervals_comparison.png`
+- `src/statistics.py`
+- `tests/test_statistics.py`
+
+**Notebooks:**
+
 - `notebooks/02_hypothesis_testing.ipynb`
 - `notebooks/03_distribution_fitting.ipynb`
 - `notebooks/04_confidence_intervals.ipynb`
-- `src/statistics.py`
-- `tests/test_statistics.py`
