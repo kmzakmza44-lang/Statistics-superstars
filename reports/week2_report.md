@@ -101,7 +101,7 @@ None of the tested distributions provided a good fit because every p-value was b
 
 ## 4. Key Statistical Findings
 
-1. All numeric variables failed the Week 1 normality tests.
+1. All five tested numeric variables failed the Week 1 normality tests.
 2. Mean final grades differed by sex and by study-time group in this sample.
 3. None of the five tested continuous distributions fitted the selected variables well.
 4. Traditional and bootstrap confidence intervals were very similar.
