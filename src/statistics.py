@@ -58,6 +58,7 @@ class StatisticalAnalyzer:
             "iqr": data.quantile(0.75) - data.quantile(0.25),
             "skewness": data.skew(),
             "kurtosis": data.kurtosis(),
+            "cv": data.std() / data.mean() if data.mean() != 0 else np.nan,
             "missing": self.data[column].isnull().sum()
         }
 
@@ -103,7 +104,43 @@ class StatisticalAnalyzer:
             "normal": normal,
             "interpretation": interpretation
         }
+    def kolmogorov_smirnov_test(self, column, dist="norm", alpha=0.05):
+        """Perform the Kolmogorov-Smirnov goodness-of-fit test."""
 
+        data = self.data[column].dropna()
+
+        if dist == "norm":
+            data_std = (data - data.mean()) / data.std()
+            statistic, p_value = stats.kstest(data_std, "norm")
+
+        elif dist == "expon":
+            loc, scale = stats.expon.fit(data)
+            statistic, p_value = stats.kstest(
+                data,
+                "expon",
+                args=(loc, scale)
+            )
+
+        elif dist == "uniform":
+            statistic, p_value = stats.kstest(
+                data,
+                "uniform",
+                args=(data.min(), data.max() - data.min())
+            )
+
+        else:
+            raise ValueError(f"Unsupported distribution: {dist}")
+
+        fit_good = p_value > alpha
+
+        return {
+            "column": column,
+            "distribution": dist,
+            "statistic": statistic,
+            "p_value": p_value,
+            "good_fit": fit_good,
+            "interpretation": "Good fit" if fit_good else "Poor fit"
+        }
     def tukey_hsd_test(
         self,
         numeric_column,
@@ -147,28 +184,37 @@ class StatisticalAnalyzer:
         self,
         column,
         expected_mean,
-        alpha=0.05
+        alpha=0.05,
+        alternative="two-sided"
     ):
-        """Test whether a column mean differs from an expected mean."""
+        """Test a column mean against an expected mean."""
 
         data = self.data[column].dropna()
 
         statistic, p_value = stats.ttest_1samp(
             data,
-            expected_mean
+            expected_mean,
+            alternative=alternative
         )
 
         significant = p_value < alpha
 
+        if alternative == "less":
+            comparison = "less than"
+        elif alternative == "greater":
+            comparison = "greater than"
+        else:
+            comparison = "different from"
+
         if significant:
             interpretation = (
-                f"The mean of {column} is significantly different "
-                f"from {expected_mean}"
+                f"The mean of {column} is significantly "
+                f"{comparison} {expected_mean}"
             )
         else:
             interpretation = (
-                f"The mean of {column} is not significantly different "
-                f"from {expected_mean}"
+                f"There is insufficient evidence that the mean "
+                f"of {column} is {comparison} {expected_mean}"
             )
 
         return {
@@ -178,17 +224,18 @@ class StatisticalAnalyzer:
             "expected_mean": expected_mean,
             "statistic": statistic,
             "p_value": p_value,
+            "df": len(data) - 1,
             "significant": significant,
             "interpretation": interpretation
         }
-
     def independent_t_test(
         self,
         numeric_column,
         group_column,
         group1,
         group2,
-        alpha=0.05
+        alpha=0.05,
+        alternative="two-sided"
     ):
         """Compare the means of two independent groups."""
 
@@ -209,20 +256,29 @@ class StatisticalAnalyzer:
         statistic, p_value = stats.ttest_ind(
             data1,
             data2,
-            equal_var=False
+            equal_var=False,
+            alternative=alternative
         )
 
         significant = p_value < alpha
 
+        if alternative == "less":
+            comparison = "less than"
+        elif alternative == "greater":
+            comparison = "greater than"
+        else:
+            comparison = "different from"
+
         if significant:
             interpretation = (
-                f"There is a significant difference between "
-                f"{group1} and {group2}"
+                f"The mean {numeric_column} for {group1} is significantly "
+                f"{comparison} the mean for {group2}"
             )
         else:
             interpretation = (
-                f"There is no significant difference between "
-                f"{group1} and {group2}"
+                f"There is insufficient evidence that the mean "
+                f"{numeric_column} for {group1} is "
+                f"{comparison} the mean for {group2}"
             )
 
         return {
@@ -233,12 +289,72 @@ class StatisticalAnalyzer:
             "group2": group2,
             "group1_mean": data1.mean(),
             "group2_mean": data2.mean(),
+            "mean_diff": data1.mean() - data2.mean(),
+            "df": len(data1) + len(data2) - 2,
             "statistic": statistic,
             "p_value": p_value,
             "significant": significant,
             "interpretation": interpretation
         }
+    def paired_t_test(
+        self,
+        column1,
+        column2,
+        alpha=0.05,
+        alternative="two-sided"
+    ):
+        """Compare two measurements from the same observations."""
 
+        paired_data = self.data[[column1, column2]].dropna()
+        data1 = paired_data[column1]
+        data2 = paired_data[column2]
+        n = len(paired_data)
+
+        if n < 2:
+            return {
+                "test": "Paired t-test",
+                "error": "At least two complete pairs are required"
+            }
+
+        statistic, p_value = stats.ttest_rel(
+            data1,
+            data2,
+            alternative=alternative
+        )
+
+        significant = p_value < alpha
+
+        if alternative == "less":
+            comparison = "less than"
+        elif alternative == "greater":
+            comparison = "greater than"
+        else:
+            comparison = "different from"
+
+        if significant:
+            interpretation = (
+                f"The mean of {column1} is significantly "
+                f"{comparison} the mean of {column2}"
+            )
+        else:
+            interpretation = (
+                f"There is insufficient evidence that the mean "
+                f"of {column1} is {comparison} the mean of {column2}"
+            )
+
+        return {
+            "test": "Paired t-test",
+            "variable1": column1,
+            "variable2": column2,
+            "mean1": data1.mean(),
+            "mean2": data2.mean(),
+            "mean_diff": data1.mean() - data2.mean(),
+            "statistic": statistic,
+            "p_value": p_value,
+            "df": n - 1,
+            "significant": significant,
+            "interpretation": interpretation
+        }
     def anova_test(
         self,
         numeric_column,
@@ -385,11 +501,12 @@ class StatisticalAnalyzer:
     def bootstrap_ci(
         self,
         column,
+        statistic=np.mean,
         n_bootstrap=10000,
         confidence=0.95,
         random_seed=42
     ):
-        """Calculate a reproducible bootstrap confidence interval."""
+        """Calculate a bootstrap confidence interval for a statistic."""
 
         data = self.data[column].dropna().to_numpy()
         n = len(data)
@@ -401,7 +518,7 @@ class StatisticalAnalyzer:
             }
 
         random_generator = np.random.default_rng(random_seed)
-        bootstrap_means = []
+        bootstrap_stats = []
 
         for repeat in range(n_bootstrap):
             sample = random_generator.choice(
@@ -410,35 +527,34 @@ class StatisticalAnalyzer:
                 replace=True
             )
 
-            bootstrap_means.append(np.mean(sample))
+            bootstrap_stats.append(statistic(sample))
 
         alpha = 1 - confidence
         lower_percentile = (alpha / 2) * 100
         upper_percentile = (1 - alpha / 2) * 100
 
         lower_bound = np.percentile(
-            bootstrap_means,
+            bootstrap_stats,
             lower_percentile
         )
 
         upper_bound = np.percentile(
-            bootstrap_means,
+            bootstrap_stats,
             upper_percentile
         )
 
         return {
             "column": column,
-            "original_mean": np.mean(data),
-            "bootstrap_mean": np.mean(bootstrap_means),
-            "bootstrap_standard_deviation": np.std(
-                bootstrap_means
-            ),
+            "statistic": statistic.__name__,
+            "original_value": statistic(data),
             "n_bootstrap": n_bootstrap,
             "confidence_level": confidence,
             "lower_bound": lower_bound,
-            "upper_bound": upper_bound
+            "upper_bound": upper_bound,
+            "bootstrap_mean": np.mean(bootstrap_stats),
+            "bootstrap_std": np.std(bootstrap_stats)
         }
-
+    
     def fit_distribution(self, column):
         """Fit several distributions and identify the best fit."""
 

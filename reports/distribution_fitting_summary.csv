@@ -1,5 +1,16 @@
 column,best_fit,p_value,good_fit
 age,Normal,8.02923326175707e-18,False
+Medu,Gamma,6.394876058784903e-21,False
+Fedu,Gamma,2.52741297474934e-17,False
+traveltime,Normal,1.375941080485477e-67,False
+studytime,Normal,3.453825973985603e-40,False
+failures,Normal,2.3271795093625772e-145,False
+famrel,Normal,1.863578215830516e-50,False
+freetime,Normal,1.0801361444981716e-22,False
+goout,Gamma,6.700645221836271e-18,False
+Dalc,Normal,5.6140149985368536e-95,False
+Walc,Normal,2.0493920917298346e-28,False
+health,Gamma,5.358143332162939e-30,False
 absences,Normal,8.175942758047707e-27,False
 G1,Lognormal,0.0004932368405688715,False
 G2,Gamma,0.00038015846154100747,False

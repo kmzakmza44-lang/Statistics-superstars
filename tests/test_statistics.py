@@ -106,3 +106,45 @@ def test_distribution_fitting_returns_a_candidate(analyzer):
         "Normal", "Exponential", "Gamma", "Lognormal", "Uniform"
     }
     assert 0 <= result["best_p_value"] <= 1
+
+def test_descriptive_statistics_contains_cv(analyzer):
+    result = analyzer.descriptive_stats("score")
+
+    assert "cv" in result
+    assert result["cv"] == pytest.approx(
+        analyzer.data["score"].std()
+        / analyzer.data["score"].mean()
+    )
+
+
+def test_kolmogorov_smirnov_returns_result(analyzer):
+    result = analyzer.kolmogorov_smirnov_test("score")
+
+    assert result["distribution"] == "norm"
+    assert 0 <= result["p_value"] <= 1
+
+
+def test_paired_t_test():
+    data = pd.DataFrame({
+        "before": [8, 9, 10, 11, 12],
+        "after": [10, 10, 12, 14, 15]
+    })
+
+    test_analyzer = StatisticalAnalyzer(data)
+    result = test_analyzer.paired_t_test("after", "before")
+
+    assert result["test"] == "Paired t-test"
+    assert result["df"] == 4
+    assert result["significant"]
+
+def test_bootstrap_supports_median(analyzer):
+    result = analyzer.bootstrap_ci(
+        "score",
+        statistic=np.median,
+        n_bootstrap=500,
+        random_seed=7
+    )
+
+    assert result["statistic"] == "median"
+    assert result["lower_bound"] <= result["original_value"]
+    assert result["original_value"] <= result["upper_bound"]
